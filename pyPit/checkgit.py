@@ -52,9 +52,11 @@ def checkgit():
     '''
     检查git, 并与mongo中记录对比, 返回需要更新的分支列表.
     :return: list
+        eg:['origin/biz_zhp', 'origin/feature/chentaihai', 'origin/wanghaisheng', 'origin/feature/guo
+k', 'origin/feature/develop_billing_hull', 'origin/zhouxb', 'origin/feature/wangyq', 'origin/master', 'origin/chentaihai_new', 'origin/feature/lixiaoxiao', 'origin/develop', 'origin/feature/wangyonggang', 'origin/feature/user_manage', 'origin/ondemand', 'origin/feature/account_bind_contract']
     '''
     # 得到git信息
-    (status, output) = commands.getstatusoutput('git pull')
+    (status, output) = commands.getstatusoutput('git checkout master | git pull')
     (status, output) = commands.getstatusoutput('git branch -vr')
     assert (not status)
     branches = get_branches(output)
@@ -68,7 +70,7 @@ def checkgit():
     branches_to_update = []
     if record is None: # 如果数据库中没有记录, 则全部存入, 更新全部分支.
         for k,v in branches.items():
-            branches_to_update.append(k)
+            branches_to_update.append({"name":k, "version":v})
         coll.insert({
             "host_mark": host_mark,
             "branches": branches
@@ -76,7 +78,7 @@ def checkgit():
     else:
         for k,v in branches.items():
             if not record["branches"].get(k) or record["branches"][k] != v:
-                branches_to_update.append(k)
+                branches_to_update.append({"name":k, "version":v})
         record["branches"] = branches
         coll.save(record)
     return branches_to_update
@@ -84,4 +86,3 @@ def checkgit():
 
 if __name__ == "__main__":
     branches_to_update = checkgit()
-    print(branches_to_update)
