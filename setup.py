@@ -6,7 +6,7 @@ setup(
     keywords = ('package', 'chinatelecom'),
     description = 'package tools for packup all python source files and dependences',
     license = 'MIT License',
-    install_requires = [],
+    install_requires = ['pymongo==3.4.0'],
 
     author = 'astwyg',
     author_email = 'i@ysgh.net',

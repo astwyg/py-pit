@@ -1,9 +1,7 @@
 # coding:utf-8
 
-import commands, re, logging
+import commands, re, logging, pymongo
 import config
-
-logger = logging.getLogger(__file__)
 
 def get_branches(output):
     '''
@@ -41,17 +39,49 @@ def get_branches(output):
             branches[nodes[0]] = nodes[1]
     return branches
 
-
+def get_host_mark():
+    '''
+    得到主机标志
+    :return:
+    '''
+    (status, hostname) = commands.getstatusoutput('hostname')
+    (status, pwd) = commands.getstatusoutput('pwd')
+    return hostname + "|" + pwd
 
 def checkgit():
     '''
     检查git, 并与mongo中记录对比, 返回需要更新的分支列表.
     :return: list
     '''
+    # 得到git信息
+    (status, output) = commands.getstatusoutput('git pull')
     (status, output) = commands.getstatusoutput('git branch -vr')
-    assert (status)
+    assert (not status)
     branches = get_branches(output)
-    logger.info(branches)
+    # 连接到mongodb, 获取上一次版本记录
+    client = pymongo.MongoClient(config.MONGO_SERVER_HOST, config.MONGO_SERVER_PORT)
+    db =client["pyPit"]
+    coll = db["watchers"]
+    host_mark = get_host_mark()
+    record = coll.find_one({"host_mark":host_mark})
+    # 比较现在状态和上一次记录
+    branches_to_update = []
+    if record is None: # 如果数据库中没有记录, 则全部存入, 更新全部分支.
+        for k,v in branches.items():
+            branches_to_update.append(k)
+        coll.insert({
+            "host_mark": host_mark,
+            "branches": branches
+        })
+    else:
+        for k,v in branches.items():
+            if not record["branches"].get(k) or record["branches"][k] != v:
+                branches_to_update.append(k)
+        record["branches"] = branches
+        coll.save(record)
+    return branches_to_update
+
 
 if __name__ == "__main__":
-    checkgit()
+    branches_to_update = checkgit()
+    print(branches_to_update)
