@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'py_pit',
+    name = 'pyPit',
     version = '0.1',
     keywords = ('package', 'chinatelecom'),
     description = 'package tools for packup all python source files and dependences',
