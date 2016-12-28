@@ -9,11 +9,9 @@
  
 # 咋用
 
-**待更新**
-
 1. `pip install git+https://github.com/astwyg/py-pit.git`
 2. 装好virtualenv
-3. 去你的git目录, 先把git配置好, 然后`python -m pyPit.daemon`
+3. 去你的代码目录, 先把git配置好, 然后`python -m pyPit.daemon`
 
 # TIPS
 
