@@ -10,4 +10,5 @@
 # 咋用
 
 **待更新**
+1. `pip install git+https://github.com/astwyg/py-pit.git`
 
