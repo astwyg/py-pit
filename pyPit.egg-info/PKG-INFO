@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: pyPit
+Version: 0.1
+Summary: package tools for packup all python source files and dependences
+Home-page: https://github.com/astwyg/py-pit
+Author: astwyg
+Author-email: i@ysgh.net
+License: MIT License
+Description: UNKNOWN
+Keywords: package,chinatelecom
+Platform: any

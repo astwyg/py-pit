@@ -1,0 +1,9 @@
+setup.py
+pyPit/__init__.py
+pyPit/checkgit.py
+pyPit/config.py
+pyPit/deamon.py
+pyPit.egg-info/PKG-INFO
+pyPit.egg-info/SOURCES.txt
+pyPit.egg-info/dependency_links.txt
+pyPit.egg-info/top_level.txt
