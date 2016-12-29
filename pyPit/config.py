@@ -11,3 +11,9 @@ INTERVAL = 60
 
 SHELL_NAME = "run.sh"
 SHELL_CONTENT = "env/bin/python server_run.py"
+
+
+## renew config
+
+WATCH_BRANCH = "master"
+SUPERVISOR_TASK = "all"
